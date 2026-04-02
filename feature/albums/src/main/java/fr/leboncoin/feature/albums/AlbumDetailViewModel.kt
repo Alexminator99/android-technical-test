@@ -13,7 +13,11 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import fr.leboncoin.core.ui.UiText
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -67,16 +71,17 @@ class AlbumDetailViewModel @Inject constructor(
     }
 
     private fun loadAlbum() {
-        viewModelScope.launch {
-            _state.update { AlbumDetailUiState.Loading }
-            getAlbumByIdUseCase(albumId)
-                .catch { e ->
-                    _state.update { AlbumDetailUiState.Error(e.message ?: "Unknown error") }
-                }
-                .collect { album ->
-                    _state.update { AlbumDetailUiState.Success(album) }
-                    analyticsHelper.logAlbumDetailViewed(album.id)
-                }
-        }
+        getAlbumByIdUseCase(albumId)
+            .onStart { _state.update { AlbumDetailUiState.Loading } }
+            .onEach { album ->
+                _state.update { AlbumDetailUiState.Success(album) }
+                analyticsHelper.logAlbumDetailViewed(album.id)
+            }
+            .catch { e ->
+                val message = e.message?.let { UiText.DynamicString(it) }
+                    ?: UiText.StringResource(fr.leboncoin.core.ui.R.string.error_unknown)
+                _state.update { AlbumDetailUiState.Error(message) }
+            }
+            .launchIn(viewModelScope)
     }
 }

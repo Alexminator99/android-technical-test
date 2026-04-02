@@ -14,6 +14,8 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -67,11 +69,11 @@ class AlbumsViewModel @Inject constructor(
     }
 
     private fun observeAlbums() {
-        viewModelScope.launch {
-            getAlbumsUseCase().collect { albums ->
+        getAlbumsUseCase()
+            .onEach { albums ->
                 _state.update { it.copy(albums = albums, isLoading = false) }
             }
-        }
+            .launchIn(viewModelScope)
     }
 
     private fun refreshAlbums() {

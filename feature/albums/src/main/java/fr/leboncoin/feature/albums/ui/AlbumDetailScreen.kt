@@ -42,6 +42,7 @@ import com.adevinta.spark.components.progress.Spinner
 import com.adevinta.spark.components.scaffold.Scaffold
 import fr.leboncoin.core.analytics.TrackScreenViewEvent
 import fr.leboncoin.core.ui.ObserveAsEvents
+import fr.leboncoin.core.ui.UiText
 import fr.leboncoin.feature.albums.AlbumDetailAction
 import fr.leboncoin.feature.albums.AlbumDetailEvent
 import fr.leboncoin.feature.albums.AlbumDetailUiState
@@ -123,7 +124,7 @@ fun AlbumDetailScreen(
             is AlbumDetailUiState.Error -> {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(state.message, style = SparkTheme.typography.body1)
+                        Text(state.message.asString(), style = SparkTheme.typography.body1)
                         Spacer(Modifier.height(16.dp))
                         ButtonFilled(
                             onClick = { onAction(AlbumDetailAction.OnRetry) },
@@ -212,7 +213,7 @@ private fun AlbumDetailScreenFavoritePreview() {
 private fun AlbumDetailScreenErrorPreview() {
     SparkTheme {
         AlbumDetailScreen(
-            state = AlbumDetailUiState.Error("Something went wrong"),
+            state = AlbumDetailUiState.Error(UiText.DynamicString("Something went wrong")),
             snackbarHostState = remember { SnackbarHostState() },
             onAction = {},
         )

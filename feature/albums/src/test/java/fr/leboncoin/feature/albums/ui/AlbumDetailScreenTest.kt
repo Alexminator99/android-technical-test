@@ -9,6 +9,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.adevinta.spark.SparkTheme
 import fr.leboncoin.core.domain.model.Album
+import fr.leboncoin.core.ui.UiText
 import fr.leboncoin.feature.albums.AlbumDetailAction
 import fr.leboncoin.feature.albums.AlbumDetailUiState
 import org.junit.Assert.assertTrue
@@ -52,7 +53,7 @@ class AlbumDetailScreenTest {
         composeTestRule.setContent {
             SparkTheme {
                 AlbumDetailScreen(
-                    state = AlbumDetailUiState.Error("Something went wrong"),
+                    state = AlbumDetailUiState.Error(UiText.DynamicString("Something went wrong")),
                     snackbarHostState = remember { SnackbarHostState() },
                     onAction = {},
                 )

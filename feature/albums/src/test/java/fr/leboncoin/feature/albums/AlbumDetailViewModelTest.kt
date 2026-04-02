@@ -9,6 +9,7 @@ import fr.leboncoin.core.domain.usecase.ToggleFavoriteUseCase
 import fr.leboncoin.core.domain.util.DataError
 import fr.leboncoin.core.domain.util.Result
 import fr.leboncoin.core.domain.model.Album
+import fr.leboncoin.core.ui.UiText
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -102,7 +103,9 @@ class AlbumDetailViewModelTest {
         viewModel.state.test {
             val state = expectMostRecentItem()
             assertTrue(state is AlbumDetailUiState.Error)
-            assertEquals("Album 42 not found", (state as AlbumDetailUiState.Error).message)
+            val error = (state as AlbumDetailUiState.Error).message
+            assertTrue(error is UiText.DynamicString)
+            assertEquals("Album 42 not found", (error as UiText.DynamicString).value)
             cancelAndIgnoreRemainingEvents()
         }
     }
