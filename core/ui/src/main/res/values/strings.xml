@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_no_internet">No internet connection</string>
+    <string name="error_request_timeout">Request timed out</string>
+    <string name="error_server">Server error, please try again</string>
+    <string name="error_serialization">Failed to process data</string>
+    <string name="error_unknown">Something went wrong</string>
+    <string name="error_database">Database error</string>
+    <string name="error_not_found">Item not found</string>
+</resources>
