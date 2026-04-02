@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
@@ -10,27 +10,11 @@ plugins {
 }
 
 android {
-    namespace = "fr.leboncoin.androidrecruitmenttestapp"
+    namespace = "fr.leboncoin.feature.albums"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "fr.leboncoin.androidrecruitmenttestapp"
         minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
     }
 
     compileOptions {
@@ -46,26 +30,20 @@ android {
 
     buildFeatures {
         compose = true
-        buildConfig = true
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
     }
 }
 
 dependencies {
-    // Feature modules
-    implementation(projects.feature.albums)
-
-    // Core modules (needed for Hilt component aggregation)
-    implementation(projects.core.data)
-    implementation(projects.core.network)
-    implementation(projects.core.database)
-    implementation(projects.core.analytics)
-    implementation(projects.core.domain)
     implementation(projects.core.model)
+    implementation(projects.core.domain)
+    implementation(projects.core.analytics)
     implementation(projects.core.ui)
-
-    // AndroidX Core
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.activity.compose)
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
@@ -75,19 +53,28 @@ dependencies {
     implementation(platform(libs.spark.bom))
     implementation(libs.spark)
 
+    // Lifecycle
+    implementation(libs.bundles.lifecycle)
+
     // Navigation
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlin.serialization.json)
+
+    // Image Loading
+    implementation(libs.bundles.coil)
 
     // Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
 
-    // Timber
-    implementation(libs.timber)
+    // Testing
+    testImplementation(libs.bundles.testing.unit)
+    testImplementation(libs.robolectric)
+    testImplementation(platform(libs.androidx.compose.bom))
+    testImplementation(libs.androidx.ui.test.junit4)
+    testImplementation(libs.androidx.ui.test.manifest)
 
     // Debug
     debugImplementation(libs.bundles.compose.debug)
-    debugImplementation(libs.leakcanary.android)
 }

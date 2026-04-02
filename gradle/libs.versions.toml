@@ -51,6 +51,7 @@ robolectric = "4.14.1"
 # Debug
 leakcanary = "2.14"
 timber = "5.0.1"
+javaxInject = "1"
 
 [libraries]
 # AndroidX Core
@@ -122,6 +123,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 
 # Debug
 leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
+javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject" }
 
 [bundles]
 compose = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling-preview", "androidx-material3"]
