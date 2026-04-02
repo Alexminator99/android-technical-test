@@ -33,8 +33,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.model)
-
     implementation(libs.bundles.retrofit)
     implementation(libs.kotlin.serialization.json)
     implementation(libs.kotlinx.coroutines.core)

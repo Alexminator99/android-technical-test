@@ -60,7 +60,6 @@ dependencies {
     implementation(projects.core.database)
     implementation(projects.core.analytics)
     implementation(projects.core.domain)
-    implementation(projects.core.model)
     implementation(projects.core.ui)
 
     // AndroidX Core

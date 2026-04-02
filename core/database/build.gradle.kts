@@ -33,8 +33,6 @@ room {
 }
 
 dependencies {
-    implementation(projects.core.model)
-
     implementation(libs.bundles.room)
     ksp(libs.room.compiler)
 
